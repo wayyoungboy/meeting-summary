@@ -1,0 +1,8 @@
+-r requirements.txt
+
+# Keep torch and torchaudio on matching releases for your OS/accelerator.
+funasr==1.4.4
+modelscope==1.39.1
+numpy>=1.24,<3
+torch==2.11.0
+torchaudio==2.11.0
