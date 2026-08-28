@@ -25,12 +25,21 @@ Browser -> Next.js :13002 -> FastAPI :13001 -> SQLite / audio files
 ## 环境要求
 
 - Python 3.11+
-- Node.js 20+
+- Node.js 20.9+
 - pnpm 9+
 - ffmpeg
 - 建议至少 16 GB 内存和 20 GB 可用磁盘（完整 ASR 模型）
 
 ## 快速开始
+
+先获取代码，后续命令默认在仓库根目录执行。
+
+```text
+git clone https://github.com/wayyoungboy/meeting-summary.git
+cd meeting-summary
+```
+
+后端环境文件 `.env` 必须位于仓库根目录（与 `.env.example` 同级），不是 `backend/`。
 
 ### 1. 配置后端
 
@@ -81,7 +90,7 @@ pnpm dev
 
 打开 <http://localhost:13002>。管理员用户名为 `admin`；密码来自 `DEFAULT_ADMIN_PASSWORD`。开发环境未配置密码时，首次创建管理员会在后端日志打印一次随机密码。
 
-Windows 用户也可以完成依赖和环境变量配置后运行 `start.bat`。
+Windows 部署请看 [docs/DEPLOY_WINDOWS.md](docs/DEPLOY_WINDOWS.md)，配置完成后可运行 start.bat。
 
 ## 配置
 
@@ -124,6 +133,16 @@ pnpm build
 - 在反向代理层配置登录限流、请求体限制和访问日志脱敏。
 - SQLite 适合单机部署；多实例部署前应迁移数据库并引入共享任务队列。
 - ASR 当前在 FastAPI 后台任务中执行，重启进程会中断正在进行的转写。
+
+## 端口与常见问题
+
+- 前端默认 http://localhost:13002，后端 API 默认 http://localhost:13001。
+- 改后端端口时同步修改根目录 .env 的 BACKEND_PORT 与 frontend/.env.local 的 API_BASE_URL。
+- 改前端端口时修改 frontend/.env.local 的 PORT。
+- JWT_SECRET_KEY 至少 32 个字符；生产环境必须设置 APP_ENV=production。
+- 前端必须使用仓库声明的包管理器安装依赖。
+- 不做本地转写时，安装 backend 的开发依赖即可，不必下载 ASR 模型。
+- 转写失败时检查 ffmpeg、backend/models/ 四个模型目录，以及后端日志。
 
 ## 开源许可证
 

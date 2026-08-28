@@ -1,6 +1,9 @@
 import { createServer } from 'http';
 import { parse } from 'url';
 import next from 'next';
+import { loadEnvConfig } from '@next/env';
+
+loadEnvConfig(process.cwd());
 
 const dev = process.env.NODE_ENV !== 'production';
 const hostname = process.env.HOST || '0.0.0.0';
